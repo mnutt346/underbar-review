@@ -186,19 +186,21 @@
   _.reduce = function(collection, iterator, accumulator) {
     if(accumulator === undefined) {
       var memo = collection[0];
-      for (var i = 1; i < collection.length; i++) {
-        var item = collection[1]
+      for (var i = 0; i < collection.length - 1; i++) {
+        var item = collection[i + 1]
         if(iterator(memo, item) !== undefined) {
           memo = iterator(memo, item);
+        } else {
+          iterator(memo, item)
         }
       }
     } else {
       var memo = accumulator;
       for (var i = 0; i < collection.length; i++) {
-        var item = collection[0];
+        var item = collection[i];
         if(iterator(memo, item) !== undefined) {
           memo = iterator(memo, item);
-        }
+        } 
       }
     }
     return memo;
