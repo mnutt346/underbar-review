@@ -184,23 +184,35 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    if(accumulator === undefined) {
-      var memo = collection[0];
-      for (var i = 0; i < collection.length - 1; i++) {
-        var item = collection[i + 1]
-        if(iterator(memo, item) !== undefined) {
-          memo = iterator(memo, item);
-        } else {
-          iterator(memo, item)
+    if(Array.isArray(collection)) {
+      if(accumulator === undefined) {
+        var memo = collection[0];
+        for (var i = 0; i < collection.length - 1; i++) {
+          var item = collection[i + 1]
+          if(iterator(memo, item) !== undefined) {
+            memo = iterator(memo, item);
+          } else {
+            iterator(memo, item)
+          }
+        }
+      } else {
+        var memo = accumulator;
+        for (var i = 0; i < collection.length; i++) {
+          var item = collection[i];
+          if(iterator(memo, item) !== undefined) {
+            memo = iterator(memo, item);
+          } 
         }
       }
     } else {
       var memo = accumulator;
-      for (var i = 0; i < collection.length; i++) {
-        var item = collection[i];
-        if(iterator(memo, item) !== undefined) {
-          memo = iterator(memo, item);
-        } 
+      for(var key in collection) {
+        var item = collection[key]
+          if(iterator(memo, item) !== undefined) {
+            memo = iterator(memo, item);
+          } else {
+            iterator(memo, item)
+          }
       }
     }
     return memo;
@@ -221,7 +233,11 @@
 
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
-    // TIP: Try re-using reduce() here.
+    if(collection.length === 0) {
+      return true
+    } else {
+      return _.reduce(collection, iterator)
+    }
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is

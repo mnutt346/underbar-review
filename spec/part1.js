@@ -469,9 +469,7 @@
         var orderTraversed = [];
 
         _.reduce([1, 2, 3, 4], function(memo, item) {
-          console.log('1: ' + orderTraversed)
           orderTraversed.push(item);
-          console.log('2: ' + orderTraversed)
         }, 10);
 
         expect(orderTraversed).to.eql([1, 2, 3, 4]);
